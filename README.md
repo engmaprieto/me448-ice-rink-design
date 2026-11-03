@@ -2,13 +2,39 @@
 
 An ME 448 Thermal Systems Design project at Cal Poly by **Marcus Prieto and Terak Hornik**. The project investigated a portable ice rink inspired by Cal Poly's earlier rink, comparing **8-hour and 24-hour startup requirements**.
 
-This repository collects the original report and presentation, reconstructed EES equation text, and a record of unresolved modeling questions.
+The system circulates calcium-chloride brine through rink tubing to carry heat to a chiller. The analysis links water cooling and freezing loads to brine heat transport, pressure losses, pumping, and equipment selection.
+
+## Start here
+
+Read **[How the ice rink system works](docs/engineering-guide.md)** for the physical loop, heat flow, calculation dependencies, component roles, team Abaqus study, and intended operation.
+
+```mermaid
+flowchart TB
+    C["Chiller"] -->|"Cold brine"| T["Pump suction connection"]
+    T --> P["Pump and supply header"]
+    P --> R["Parallel rink circuits"]
+    R -->|"Warm brine through return header"| C
+    E["Expansion tank"] --- T
+    I["Water and ice"] -->|"Heat absorbed"| R
+```
+
+Functional overview only: the tank connects to the brine circuit near pump suction; see the guide for the connection and the original schematic. The chiller's refrigerant and heat-rejection circuits are separate from the brine loop.
+
+| Read next | Purpose |
+| --- | --- |
+| [Design basis and assumptions](docs/design-basis.md) | Inputs, temperatures, geometry, fluid properties, and conflicting values |
+| [1. Heat-load calculations](docs/calculations/01-heat-loads.md) | Water cooling, freezing, ice cooling, convection, radiation, and startup versus steady duty |
+| [2. Brine, tubing, and pumping](docs/calculations/02-brine-and-pumping.md) | Circuit geometry, flow, heat transfer, pressure losses, and pump operating point |
+| [3. Chiller and expansion tank](docs/calculations/03-chiller-and-expansion-tank.md) | Capacity, COP, exchanger conductance, fluid expansion, and gas acceptance volume |
+| [EES variable dictionary](docs/variables.md) | Every uncommented left-hand-side variable in the three scripts, with meanings and source lines |
+| [Results and reconciliation](docs/reconciliation.md) | Reported results, unresolved differences, and the path to validation |
+| [Sources and engineering references](docs/references.md) | Original report locations and primary technical references |
 
 ## Project status
 
-This is a design and simulation study. The `.txt` scripts were reconstructed from the report's printed appendices; they are archival transcriptions with the original equations retained. They have **not been compiled, solved, or numerically validated in EES** during reconstruction. The original report acknowledges unresolved calculation issues and proposes physical testing as future work.
+This is a design and simulation study. The `.txt` scripts were reconstructed from the report's printed appendices, with the original equations retained. They have **not been compiled, solved, or numerically validated in EES** during reconstruction. The original report acknowledges unresolved calculation issues and proposes physical testing as future work.
 
-Transcription checks establish agreement with the printed source. They do not establish that the equations or reported results are correct.
+The walkthroughs explain the intended physics alongside the actual printed implementation. New worked examples are labeled illustrative. Transcription checks establish source agreement, not correctness of the equations or reported results.
 
 ## Engineering scope
 
