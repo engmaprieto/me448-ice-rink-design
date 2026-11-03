@@ -1,0 +1,78 @@
+ICE RINK EES SCRIPT RECONSTRUCTION
+Recovered 2026-11-03 from the user-supplied ME 448 project report.pdf.
+
+WHAT WAS RECOVERED
+01_heat_loads.txt: Appendix A, PDF pages 23-25.
+02_piping_pressure_and_pump.txt: Appendix C, PDF pages 27-29.
+03_expansion_tank_and_chiller.txt: Appendix E, PDF pages 31-32.
+
+These files transcribe the printed equations and comments. They are historical
+source recovery artifacts. They are not recovered native .EES/.EES64 project
+files, corrected engineering models, or validated reproductions of the tables.
+No EES compilation, solve, or numerical reproduction has been performed.
+
+USING THE FILES
+EES supports opening .TXT files into its Equations window. Use File > Open and
+the text-file filter, then select one source file. The documentation states
+that opening may immediately compile the equations. Hold Ctrl through File >
+Open to suppress compilation while inspecting an uncorrected transcription.
+Save from EES as a native file after selecting and recording the required unit
+system and other settings. Renaming a .TXT file does not restore native state.
+
+The printed source includes unresolved issues and may not compile unchanged.
+In particular, script 3 preserves the visibly printed trailing F on the rho_min
+line. Keep this transcription intact; make edits in a separate working copy.
+
+Official EES documentation:
+https://fchart.com/ees/eeshelp/8org09.htm
+https://fchartsoftware.com/ees/eeshelp/window_equations.htm
+
+RECOVERY METHOD AND VERIFICATION
+All eight printed source pages were inspected as rendered PDF pages. Text was
+extracted from those pages with pypdf. Page furniture and layout whitespace
+were removed. Wrapped equations/comments were rejoined. Degree signs in
+comments were converted to ASCII text. A reconstruction comment header was
+added. Every output equation token was compared with the extracted source
+after removing comments and whitespace. See verification.json for the later
+independent extraction comparison. This verifies transcription fidelity,
+not EES syntax, function availability, dimensional correctness, or physics.
+
+source-map.json maps each recovered source line to its PDF page and layout
+line. evidence/ contains the extracted appendix pages and the three original
+printed-result screenshots (pages 26, 30, and 33) for later comparison.
+source-manifest.json records the input PDF hash and recovered source hashes.
+reconstruction-issues.json records specific unresolved source discrepancies.
+
+WHAT IS STILL MISSING
+Original saved unit settings; variable units, guesses and bounds; solver
+configuration; original parametric tables and plots; any unprinted macros or
+custom libraries; EES version; and edits not printed in the report. Output
+screenshots provide clues but cannot recover all of this state.
+
+KEY RECONCILIATION ITEMS
+- Geometry differs across scripts: 30 ft versus 35 ft rink length.
+- Table 2 and script 2 disagree on tube spacing and tubing dimensions.
+- Script 2 calls the 24-hour startup load a steady-state load.
+- Some printed outputs use different inputs from the displayed scripts.
+- Two heat-transfer/energy-balance equations in script 2 are commented out.
+- Script 3 contains a stray F outside a comment.
+- Units, absolute temperatures, radiation balances, brine operating
+  temperature, and hydraulic/heat-transfer relationships need review.
+
+NEXT TECHNICAL STAGE
+Create a separately documented working version with explicit assumptions,
+consistent units, startup/steady-state cases, and linked model inputs/outputs.
+Resolve source conflicts rather than silently choosing table values. Then
+compile, check units, solve, and compare against independent calculations in
+EES. Engineering corrections and validation have not been included here.
+
+ATTRIBUTION
+The source report credits Terak Hornik and Marcus Prieto. Its original credit
+lines remain in the transcriptions. Marcus states that his work covered EES
+scripting, system modeling, component selection, and concepts across fluid
+mechanics, thermodynamics, heat transfer, and thermal systems design. He did
+not perform the Abaqus work. This recovery adds no new attribution for that
+work and does not include an Abaqus model reconstruction.
+
+The initial source recovery was performed locally. This repository subsequently
+collected the recovered text, provenance, and source documents.

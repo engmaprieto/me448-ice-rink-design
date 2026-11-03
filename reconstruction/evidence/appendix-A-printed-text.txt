@@ -1,0 +1,139 @@
+=== PDF PAGE 23 ===
+                                                                                                                                23
+
+6 - Appendices
+
+Appendix A - First EES Script
+"------------------------------------------------------------------------------------------------------------------------------
+----------"
+"ME-448 Heat Load Calculations Lab 1 - Updated"
+"------------------------------------------------------------------------------------------------------------------------------
+----------"
+"By Marcus and Terak"
+"------------------------------------------------------------------------------------------------------------------------------
+----------"
+"Given Variables"
+"------------------------------------------------------------------------------------------------------------------------------
+----------"
+L = 30 [ft]
+W = 15 [ft]
+A = L * W
+Height = 8 [ft]
+thickness = 1 [in]*convert(in,ft)
+T_ice = 24 [F]
+T_ice_R = (24 + 459.67) [R]
+T_initial_R = (52 + 459.67) [R]
+T_final_R = (32 + 459.67) [R]
+T_initial = 52 [F]
+T_final = 32 [F]
+T_air_R = (80 + 459.76) [R]
+T_air = 80 [F]
+T_film = 1/2 * (T_ice + T_air)
+T_tent = 90 [F]
+T_tent_R = T_tent + 459.67 [R]
+T_film2 = 1/2 * (T_tent + T_air)
+T_sky = 55 [F]
+T_sky_R = (55 + 459.67) [R]
+rho_ice = density(Ice_inc, T=T_ice)
+m_ice = rho_ice * A * thickness
+t = 24 [hr]
+g = 32.2 [ft/s^2] * convert(ft/s^2, ft/hr^2)
+P_atm = 14.7 [psia]
+B = 1 / converttemp(F, R, T_film)
+B2 = 1 / converttemp(F, R, T_film)
+nu = kinematicviscosity(Air, T=T_film, P=P_atm)
+nu2 = kinematicviscosity(Air, T=T_film2, P=P_atm)
+
+=== PDF PAGE 24 ===
+                                                                                                                                     24
+
+
+alpha = thermaldiffusivity(Air, T=T_film, P=P_atm)
+alpha2 = thermaldiffusivity(Air, T=T_film2, P=P_atm)
+k = conductivity(Air, T=T_film)
+k2 = conductivity(Air, T=T_film2)
+cp_water = cp(Water, T=T_final, P=P_atm)
+Gs = 291.6 [Btu/hr*ft^2]
+sigma = 5.670374419e-8 [W/m^2*K^4]  "Stefan-Boltzmann constant converted to appropriate
+units if necessary"
+epsilon_tent = 0.87  "Assuming this for the tent material"
+epsilon_ice = 0.95   "Assume emissivity for ice"
+epsilon = 0.87
+L_c = A / (2 * (L + W))
+R_a_L_c = g * B * (T_air - T_ice) * (L_c^3) * (1 / (nu * alpha))
+Nu_L_c = 0.52 * R_a_L_c^(1/5)
+h = (Nu_L_c * k) / L_c
+R_a_L_c_2 = g * B2 * (T_tent - T_air) * (L_c^3) * (1 / (nu2 * alpha2))
+Nu_L_c_2 = 0.15 * R_a_L_c_2^(1/3)
+h_tent = (Nu_L_c_2 * k2) / L_c
+"------------------------------------------------------------------------------------------------------------------------------
+----------"
+"1a) Power required to freeze the ice in Btu/hr for both design conditions (8 hour startup and 24
+hour startup)"
+"------------------------------------------------------------------------------------------------------------------------------
+----------"
+HF = enthalpy_fusion(Water)
+q_freeze = (m_ice * HF) / t
+"------------------------------------------------------------------------------------------------------------------------------
+----------"
+"1b) Power Required to cool ice to 24F in Btu/hr"
+"------------------------------------------------------------------------------------------------------------------------------
+----------"
+cp_ice = specheat(Ice, T=T_ice, P=P_atm)
+q_ice_cool = (m_ice * cp_ice * (T_final_R - T_ice_R)) / t
+"------------------------------------------------------------------------------------------------------------------------------
+----------"
+"1c) Power Required to cool water from 52F to 32F"
+"------------------------------------------------------------------------------------------------------------------------------
+----------"
+q_cool_water = (m_ice * cp_water * (T_initial_R - T_final_R)) / t
+"------------------------------------------------------------------------------------------------------------------------------
+----------"
+"1d) Heat Gain by natural convection on ice surface in Btu/hr"
+"------------------------------------------------------------------------------------------------------------------------------
+----------"
+
+=== PDF PAGE 25 ===
+                                                                                                                                       25
+
+
+q_conv = h * A * (T_air_R - T_ice_R)
+q_tent = h_tent * A * (T_tent_R - T_air_R)
+"------------------------------------------------------------------------------------------------------------------------------
+----------"
+"1e) Heat gain by radiation on the ice surface in Btu/hr."
+"------------------------------------------------------------------------------------------------------------------------------
+----------"
+alpha_abs = 0.39 [-]
+q_rad_exch = epsilon * sigma * A * (T_tent_R^4 - T_air_R^4)
+q_rad_ice = sigma * (T_tent_R^4 - T_ice_R^4) / (((1 - epsilon_tent) / (epsilon_tent * A)) + (1 /
+(F_tent_ice * A)) + ((1 - epsilon_ice) / (epsilon * A)))
+q_rad_surr = sigma * (T_tent_R^4 - T_sky_R^4) / (((1 - epsilon_tent) / (epsilon_tent * A)) + (1 /
+(F_tent_surr * A)))
+q_surr_ice = sigma * (T_sky_R^4 - T_ice_R^4) / (((1 - epsilon_ice) / (epsilon_ice * A)) + (1 /
+(F_ice_surr * A)))
+q_rad = q_rad_ice + q_rad_surr
+q_net = q_rad_ice + q_rad_surr
+"Assumed flow fractions"
+F_tent_ice = 0.5  "Assumed fraction of heat transfer to ice via tent"
+F_tent_surr = 1 - F_tent_ice
+F_ice_surr = 1 - F_tent_ice
+"------------------------------------------------------------------------------------------------------------------------------
+----------"
+"1f) Total startup power required in Btu/hr and tons for both designs."
+"------------------------------------------------------------------------------------------------------------------------------
+----------"
+q_startup = q_freeze + q_ice_cool + q_cool_water + q_conv + q_rad
+"------------------------------------------------------------------------------------------------------------------------------
+----------"
+"1g) Total steady state power required in Btu/hr and tons for both designs"
+"------------------------------------------------------------------------------------------------------------------------------
+----------"
+q_steady_state = q_conv + q_rad
+"------------------------------------------------------------------------------------------------------------------------------
+----------"
+"END"
+"------------------------------------------------------------------------------------------------------------------------------
+----------"
+
+

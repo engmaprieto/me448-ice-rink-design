@@ -1,0 +1,132 @@
+[
+  {
+    "id": "R01",
+    "kind": "unrecovered-state",
+    "pages": [
+      2,
+      23,
+      26,
+      30,
+      33
+    ],
+    "observation": "The report prints equations and output screenshots, but not a complete native EES project. Page 2 explicitly mentions that separately saved code did not preserve the unit system and variable information.",
+    "next_step": "Recover or explicitly select and document the unit system and variable metadata before attempting a validated model."
+  },
+  {
+    "id": "R02",
+    "kind": "source-inconsistency",
+    "pages": [
+      23,
+      27
+    ],
+    "observation": "Script 1 uses L=30 ft; script 2 uses L=35 ft. Width is 15 ft in both.",
+    "next_step": "Resolve the intended geometry from assignment information or owner recollection."
+  },
+  {
+    "id": "R03",
+    "kind": "source-inconsistency",
+    "pages": [
+      8,
+      27
+    ],
+    "observation": "Table 2 gives 3-inch tube spacing and 0.5-inch tube OD; script 2 gives 4-inch spacing, 0.5-inch ID, and 0.625-inch OD.",
+    "next_step": "Resolve the tubing dimensions and spacing before integrating models."
+  },
+  {
+    "id": "R04",
+    "kind": "source-inconsistency",
+    "pages": [
+      3,
+      27,
+      31
+    ],
+    "observation": "Script 2 sets q_total=39594 Btu/hr but labels it steady-state power. Table 1 identifies 39594 as the 24-hour startup load and 24602 as steady-state load; script 3 uses 24602.",
+    "next_step": "Define startup and steady-state cases explicitly rather than treating hard-coded loads as connected outputs."
+  },
+  {
+    "id": "R05",
+    "kind": "source-configuration",
+    "pages": [
+      23,
+      26
+    ],
+    "observation": "The printed heat-load script sets t=24 hr. Separate 8-hour and 24-hour output images do not establish saved parametric tables or the original run configuration.",
+    "next_step": "Add explicit case configuration only in a separately identified corrected model."
+  },
+  {
+    "id": "R06",
+    "kind": "visible-source-token",
+    "pages": [
+      31
+    ],
+    "observation": "The rho_min equation visibly ends with an F after its closing comment: \"Density at T_max\"F. This token is preserved in the transcription.",
+    "next_step": "Check and remove the stray token in a separate working version; retain this archival version."
+  },
+  {
+    "id": "R07",
+    "kind": "disabled-equations",
+    "pages": [
+      28
+    ],
+    "observation": "The outlet-temperature relationship and q_totalcalculated=q_total are enclosed in quotes, which makes them EES comments. T_mo is fixed at -20 F on page 27.",
+    "next_step": "Choose independent design variables and required energy-balance constraints before reactivating equations."
+  },
+  {
+    "id": "R08",
+    "kind": "source-inconsistency",
+    "pages": [
+      27,
+      28,
+      31,
+      32,
+      33
+    ],
+    "observation": "Printed inputs and outputs differ: script 3 uses 25 percent concentration and 0.1 lbm/s loop flow; its result images show 20 percent and 5.098 lbm/s. Script 2 fixes outlet temperature at -20 F; script 3 uses -15 F.",
+    "next_step": "Treat the screenshots as independent historical evidence rather than proof that the printed code reproduces them."
+  },
+  {
+    "id": "R09",
+    "kind": "units-review-needed",
+    "pages": [
+      24,
+      25,
+      28,
+      29,
+      32
+    ],
+    "observation": "Visible expressions mix SI and customary units, hourly and per-second quantities, and a head equation containing g_c. Restoring text alone does not establish dimensional correctness.",
+    "next_step": "Perform a dimensional audit and EES unit checks before relying on numerical outputs."
+  },
+  {
+    "id": "R10",
+    "kind": "source-detail",
+    "pages": [
+      23,
+      25
+    ],
+    "observation": "T_air_R uses 459.76 whereas other absolute-temperature expressions use 459.67. B2 uses T_film rather than T_film2. q_surr_ice is computed but not included in q_rad, which instead adds q_rad_surr to q_rad_ice.",
+    "next_step": "Review temperature conversions and the radiation network in a corrected version; no repair made here."
+  },
+  {
+    "id": "R11",
+    "kind": "model-review-needed",
+    "pages": [
+      27,
+      31
+    ],
+    "observation": "Both brine scripts define inlet temperature as T_freeze minus 5 F.",
+    "next_step": "Review the intended liquid operating range and freeze-protection margin using appropriate property data."
+  },
+  {
+    "id": "R12",
+    "kind": "source-inconsistency",
+    "pages": [
+      3,
+      26,
+      17,
+      33
+    ],
+    "observation": "The heat-load output screenshot differs substantially from Table 1. Table 5 gives UA=1318.8 with its own printed unit label, whereas the third-script output image shows UA=2905.",
+    "next_step": "Reconcile numerical results using explicit run settings and dimensionally checked equations; do not fit the model to the tables."
+  }
+]

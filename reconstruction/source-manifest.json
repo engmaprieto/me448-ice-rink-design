@@ -1,0 +1,90 @@
+{
+  "reconstruction_date": "2026-11-03",
+  "source_pdf": "../docs/source/ME448-Project-Report.pdf",
+  "source_pdf_sha256": "b64f98eb731c2d037ffb86a69616aee1281a0fba9f40e5784380090c1fcd1817",
+  "source_page_count": 37,
+  "original_report_authors": [
+    "Terak Hornik",
+    "Marcus Prieto"
+  ],
+  "status": "Report transcription; not compiled or solved in EES.",
+  "scope": "Recover the equations printed in Appendices A, C, and E. No engineering corrections.",
+  "normalizations": [
+    "Removed page numbers, appendix headings, and blank layout lines.",
+    "Trimmed layout indentation.",
+    "Joined PDF-wrapped equations and comments; continued separator comments joined without spaces.",
+    "Replaced degree signs in comments with the ASCII text deg .",
+    "Added a reconstruction comment header; all printed equation tokens retained."
+  ],
+  "scripts": [
+    {
+      "file": "report-transcriptions/01_heat_loads.txt",
+      "sha256": "9013c659b91b48bb8d9d1bb8a2f7b0db55646ff87c635220e3344f87041ae9b9",
+      "appendix": "A",
+      "pdf_pages": [
+        23,
+        24,
+        25
+      ],
+      "logical_printed_lines": 96,
+      "uncommented_statement_lines": 64,
+      "source_text": "evidence/appendix-A-printed-text.txt",
+      "printed_result_page": 26,
+      "printed_result_image": "evidence/printed-results-page-26.png",
+      "equation_tokens_match_pdf_extraction": true
+    },
+    {
+      "file": "report-transcriptions/02_piping_pressure_and_pump.txt",
+      "sha256": "b06f8ba7136a26ff379efe6646e16f54bd8f69e6d22d83e237b6aa977e87c425",
+      "appendix": "C",
+      "pdf_pages": [
+        27,
+        28,
+        29
+      ],
+      "logical_printed_lines": 112,
+      "uncommented_statement_lines": 72,
+      "source_text": "evidence/appendix-C-printed-text.txt",
+      "printed_result_page": 30,
+      "printed_result_image": "evidence/printed-results-page-30.png",
+      "equation_tokens_match_pdf_extraction": true
+    },
+    {
+      "file": "report-transcriptions/03_expansion_tank_and_chiller.txt",
+      "sha256": "897d142c697bc19b342a012150f72236a63da65151db2cc942b8c7bcf7b767f9",
+      "appendix": "E",
+      "pdf_pages": [
+        31,
+        32
+      ],
+      "logical_printed_lines": 78,
+      "uncommented_statement_lines": 41,
+      "source_text": "evidence/appendix-E-printed-text.txt",
+      "printed_result_page": 33,
+      "printed_result_image": "evidence/printed-results-page-33.png",
+      "equation_tokens_match_pdf_extraction": true
+    }
+  ],
+  "unrecovered_state": [
+    "Original native EES files and unprinted revisions.",
+    "Saved unit system and variable units, bounds, guesses, formatting, and solver settings.",
+    "Original parametric tables, plots, macros, custom libraries, and EES version."
+  ],
+  "documentation": [
+    {
+      "title": "EES Open command",
+      "url": "https://mail.fchartsoftware.com/ees/eeshelp/8org09.htm"
+    },
+    {
+      "title": "EES Equations Window",
+      "url": "https://fchartsoftware.com/ees/eeshelp/window_equations.htm"
+    }
+  ],
+  "source_pdf_original_filename": "ME 448 project report.pdf",
+  "supporting_presentation": {
+    "path": "../docs/source/ME448-Project-Presentation.pdf",
+    "original_filename": "ME 448 project presntation .pdf",
+    "sha256": "f2c032ddf7892af90a8b1b4c2c26452aa181e5137f233fa3a509f9ae92d6468e",
+    "role": "Supporting project presentation; not the source of the recovered EES equations."
+  }
+}

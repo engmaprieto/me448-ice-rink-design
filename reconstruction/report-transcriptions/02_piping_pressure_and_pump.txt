@@ -1,0 +1,119 @@
+"REPORT TRANSCRIPTION - RECONSTRUCTED 2026-11-03"
+"Source: ME 448 project report.pdf; Appendix C; PDF pages 27-29."
+"Original report authors: Terak Hornik and Marcus Prieto."
+"Printed equations retained, including unresolved source issues."
+"Not compiled or solved in EES. Original saved EES settings are unavailable."
+"See ../RECONSTRUCTION-NOTES.txt and ../source-map.json."
+
+"----------------------------------------------------------------------------------------------------------------------------------------"
+" Project: Portable Ice Rink Design"
+" File 2: Heat Transfer in Pipes, Pressure Drop Calculations, and Pump Selection"
+"----------------------------------------------------------------------------------------------------------------------------------------"
+"1. Definitions and Given Data"
+"----------------------------------------------------------------------------------------------------------------------------------------"
+"Geometric properties"
+L = 35 [ft]        "Length of ice rink"
+W = 15 [ft]        "Width of ice rink"
+A = L * W          "Area of ice rink"
+S = 4 [in] * convert(in, ft)          "Tube spacing"
+Num_Tubes = L / S           "Number of tubes (should be 105)"
+"PEX tubing dimensions"
+D_i = 0.5 [in] * convert(in, ft)  "Inner diameter of PEX tubes"
+D_o = 0.625 [in] * convert(in, ft) "Outer diameter of PEX tubes"
+k_tube = 0.24 [Btu/hr*ft*F]           "Thermal conductivity of PEX"
+"Thermal resistances"
+R_ins = 0.2021 [hr*ft^2*F/Btu]                  "Thermal resistance of ice and insulation"
+"Temperatures"
+T_s = 24 [F]       "Surface temperature"
+"Calculate T_pipe based on heat transfer"
+q_total = 39594 [Btu/hr]   "Total steady-state power from File 1"
+R_total_surface = R_ins               "Total thermal resistance from pipe to surface"
+T_pipe = T_s - (q_total * R_total_surface) / A   "Calculating T_pipe indirectly"
+"Brine properties"
+C = 25 [%]         "Brine concentration (CaCl2 solution)"
+T_freeze = freezingpt(CaCl2, C=C)   "Freezing temperature of brine solution"
+T_mi = T_freeze - 5 [F]   "Inlet temperature of brine (5deg F below freezing point)"
+"Mean temperature and outlet temperature"
+T_mo =-20[F]   "Outlet temperature (to be determined by EES)"
+T_m = (T_mi + T_mo) / 2               "Mean temperature"
+"Brine properties at mean temperature"
+rho_brine = density(CaCl2, T=T_m, C=C)     "Density of brine at T_m"
+mu_brine = viscosity(CaCl2, T=T_m, C=C)                            "Dynamic viscosity of brine at T_m"
+nu_brine = mu_brine / rho_brine  "Kinematic viscosity"
+k_brine = conductivity(CaCl2, T=T_m, C=C)                          "Thermal conductivity of brine at T_m"
+cp_brine = cp(CaCl2, T=T_m, C=C)   "Specific heat capacity of brine at T_m"
+Pr_brine = prandtl(CaCl2, T=T_m, C=C)   "Prandtl number"
+"Flow parameters"
+Num_Loops = 15             "Adjusted number of loops to get integer tubes per loop"
+Tubes_per_Loop = Num_Tubes / Num_Loops  "Number of tubes per loop (105/15 = 7)"
+x = Tubes_per_Loop * W   "Length of tubing per loop"
+v_brine = 3 [ft/s]         "Assumed velocity of brine in tubes"
+A_tube = pi * D_i^2 / 4
+"Variables for equation count"
+Re_D = (v_brine * D_i) / nu_brine
+f = moodychart(Re_D, 0)   "Assuming smooth pipe"
+f8 = f / 8
+Nu_D = (f8 * (Re_D - 1000) * Pr_brine) / (1 + 12.7 * sqrt(f8) * (Pr_brine^(2/3) - 1))
+h = Nu_D * k_brine / D_i
+R_total = (1 / (h * A_tube)) + (ln(D_o / D_i) / (2 * pi * k_tube))
+U = 1 / R_total
+"Mass flow rate per loop (lbm/s)"
+m_dot_loop = rho_brine * A_tube * v_brine
+"Convert mass flow rate to lbm/hr"
+m_dot_loop_hr = m_dot_loop * 3600 [s/hr]
+"Total mass flow rate"
+m_dot_total = Num_Loops * m_dot_loop
+m_dot_total_hr = m_dot_total * 3600 [s/hr]
+"Temperature drop calculations"
+Theta = exp( - U * x / (m_dot_loop * cp_brine) )
+"T_mo = T_pipe - (T_pipe - T_mi) * Theta"
+DeltaT_loop = T_mo - T_mi
+"Heat transfer calculation"
+q_totalcalculated = m_dot_total * cp_brine * DeltaT_loop
+"Commented out the redundant equation"
+"q_totalcalculated = q_total"   "Ensure this equation is satisfied"
+"Pressure drop calculations"
+"Convert rho_brine to slug/ft^3"
+rho_brine_slug = rho_brine / 32.174 [lbm/slug]
+deltaP_friction = f * (x / D_i) * (rho_brine_slug * v_brine^2 / 2)
+Num_Bends = Tubes_per_Loop - 1
+K_bend = 0.2   "Assumed loss coefficient per 180-degree bend"
+deltaP_bends = Num_Bends * K_bend * (rho_brine_slug * v_brine^2 / 2)
+deltaP_loop = deltaP_friction + deltaP_bends
+"Pressure drop in headers (PVC pipes)"
+D_header = 1.5 [in]*convert(in, ft)
+A_header = pi * D_header^2 / 4
+"Convert m_dot_total to lbm/s for consistent units"
+m_dot_total_s = m_dot_total_hr / 3600 [s/hr]
+v_header = m_dot_total_s / (rho_brine * A_header)
+Re_header = (v_header * D_header) / nu_brine
+f_header = moodychart(Re_header, 0)
+L_header = 30 [ft]  "Adjusted length per instruction"
+deltaP_header = f_header * (L_header / D_header) * (rho_brine_slug * v_header^2 / 2)
+"Pressure drop in hoses"
+D_hose = 2 [in]*convert(in, ft)
+A_hose = pi * D_hose^2 / 4
+v_hose = m_dot_total_s / (rho_brine * A_hose)
+Re_hose = (v_hose * D_hose) / nu_brine
+f_hose = moodychart(Re_hose, 0)
+L_hose = 70 [ft]  "Adjusted length per instruction"
+deltaP_hose = f_hose * (L_hose / D_hose) * (rho_brine_slug * v_hose^2 / 2)
+"Pressure drop through heat exchanger"
+deltaP_HX = 5 [psi]*144 [in^2/ft^2]   "Convert psi to lb/ft^2"
+"Total system pressure drop"
+deltaP_total = deltaP_loop + deltaP_header + deltaP_hose + deltaP_HX
+"Convert deltaP_total to feet of fluid"
+g_c = 32.174 [lbm*ft/(lbf*s^2)]  "Unit conversion factor"
+Pump_head = deltaP_total / (rho_brine * g_c)
+"Calculate required pump power"
+"Volumetric flow rate (ft^3/s)"
+Qv_total = m_dot_total_s / rho_brine
+"Pump power (ft*lbf/s)"
+Pump_power = (deltaP_total * Qv_total) / Pump_efficiency
+"Convert pump power to horsepower"
+Pump_power_hp = Pump_power * convert(ft*lbf/s, hp)
+"Assumed pump efficiency (to be updated after pump selection)"
+Pump_efficiency = 0.7  "Assumed pump efficiency"
+"----------------------------------------------------------------------------------------------------------------------------------------"
+"END"
+"----------------------------------------------------------------------------------------------------------------------------------------"

@@ -1,0 +1,37 @@
+{
+  "verified_at_utc": "2026-11-03T12:12:12.166482+00:00",
+  "scope": "Source transcription fidelity only; rendered source pages visually reviewed.",
+  "checks": [
+    {
+      "file": "report-transcriptions/01_heat_loads.txt",
+      "independent_pdfplumber_equation_token_match": true,
+      "sha256_match": true,
+      "ascii_text": true,
+      "comments_and_delimiters_balanced": true,
+      "source_map_entries": 96,
+      "uncommented_statement_lines": 64
+    },
+    {
+      "file": "report-transcriptions/02_piping_pressure_and_pump.txt",
+      "independent_pdfplumber_equation_token_match": true,
+      "sha256_match": true,
+      "ascii_text": true,
+      "comments_and_delimiters_balanced": true,
+      "source_map_entries": 112,
+      "uncommented_statement_lines": 72
+    },
+    {
+      "file": "report-transcriptions/03_expansion_tank_and_chiller.txt",
+      "independent_pdfplumber_equation_token_match": true,
+      "sha256_match": true,
+      "ascii_text": true,
+      "comments_and_delimiters_balanced": true,
+      "source_map_entries": 78,
+      "uncommented_statement_lines": 41
+    }
+  ],
+  "known_source_defects_preserved": true,
+  "ees_compiled": false,
+  "ees_solved": false,
+  "engineering_results_validated": false
+}

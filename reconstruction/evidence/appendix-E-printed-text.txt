@@ -1,0 +1,95 @@
+=== PDF PAGE 31 ===
+                                                                                                                          31
+
+Appendix E - Third EES Script
+"------------------------------------------------------------------------------------------------------------------------------
+----------"
+" Project: Portable Ice Rink Design"
+" File 3: Expansion Tank Sizing and Water Chiller Selection"
+"------------------------------------------------------------------------------------------------------------------------------
+----------"
+"1. Definitions and Given Data"
+"------------------------------------------------------------------------------------------------------------------------------
+----------"
+"System specifications"
+V_system = 500 [gal] * convert(gal, ft^3)  "Total brine volume in ft^3"
+"Brine properties"
+C = 25 [%]         "Brine concentration (CaCl2 solution)"
+T_freeze = freezingpt(CaCl2, C=C)   "Freezing temperature of brine solution"
+"Temperatures"
+T_mi = T_freeze - 5 [F]   "Inlet temperature of brine (5°F below freezing point)"
+T_mo = -15 [F]   "Outlet temperature of brine (from File 2)"  "Assign actual value"
+T_m = (T_mi + T_mo) / 2   "Mean brine temperature"
+T_min = T_mi   "Minimum temperature from File 2"
+T_max = T_mo   "Maximum temperature from File 2"
+P_fill = 15 [psig]          "System fill pressure"
+P_max = 40 [psig]           "Maximum system pressure"
+"Brine properties at T_min and T_max"
+rho_min = density(CaCl2, T=T_max, C=C)   "Density at T_max"F
+rho_max = density(CaCl2, T=T_min, C=C)   "Density at T_min"
+"Calculate volumetric expansion"
+DeltaV = V_system * ( (1 / rho_min) - (1 / rho_max) ) * rho_max   "Volume change due to
+density change"
+"Calculate expansion tank size"
+P_fill_abs = P_fill + 14.7 [psi]
+P_max_abs = P_max + 14.7 [psi]
+V_tank_min = DeltaV / ( (P_max_abs / P_fill_abs) - 1 )
+"Select a standard expansion tank size"
+V_tank_selected = V_tank_min * 1.2   "Selecting tank size with 20% safety margin"
+"Cooling load from File 1"
+q_total = 24602 [Btu/hr]   "Total steady-state power from File 1"
+q_cooling = q_total
+"Convert cooling load to tons"
+q_cooling_tons = q_cooling / 12000 [Btu/hr per ton]
+"Select chiller capacity"
+Chiller_capacity = q_cooling_tons * 1.1   "Adding 10% safety margin"
+"Refer to Figure 9 for chiller selection"
+
+=== PDF PAGE 32 ===
+                                                                                                                             32
+
+
+"Based on brine temperature and required capacity, select appropriate chiller model"
+"Calculate chiller performance parameters"
+"From selected chiller data (e.g., Model 8L2 at -15°F)"
+COP_chiller = 3.0  "Assumed coefficient of performance"
+q_input = q_cooling / COP_chiller
+"Convert input power to kW"
+P_input_kW = q_input * convert(Btu/hr, kW)
+"------------------------------------------------------------------------------------------------------------------------------
+----------"
+"Overall conductance calculations"
+"------------------------------------------------------------------------------------------------------------------------------
+----------"
+"Using LMTD method for heat exchanger"
+T_ref = T_mi - 10 [F]  "Refrigerant temperature 10°F below brine inlet"
+del_T1 = T_mi - T_ref
+del_T2 = T_mo - T_ref
+delta_T_lm = (del_T1 - del_T2) / ln(del_T1 / del_T2)
+"From File 2:"
+Num_Loops = 15   "Number of loops (from File 2)"
+x = 105 [ft]       "Length of tubing per loop (from File 2)"
+D_i = 0.5 [in]*convert(in, ft)  "Inner diameter of PEX tubes"
+"Total heat transfer area (ft^2)"
+A_total = Num_Loops * x * pi * D_i
+"Overall conductance (UA)"
+UA = q_cooling / delta_T_lm
+"Calculate U based on UA and A_total"
+U = UA / A_total
+"Mass flow rates"
+m_dot_loop = 0.1 [lbm/s]  "Mass flow rate per loop (from File 2)"
+m_dot_total = Num_Loops * m_dot_loop  "Total mass flow rate"
+"Calculate cp_brine"
+cp_brine = cp(CaCl2, T=T_m, C=C)  "Specific heat capacity of brine at mean temperature"
+"Calculate NTU"
+C_min = m_dot_total * cp_brine
+NTU = UA / C_min
+"Effectiveness (E)"
+E = 1 - exp(-NTU)
+"Verify refrigerant temperature"
+T_ref_calculated = T_mo - (T_mo - T_mi) / E
+"------------------------------------------------------------------------------------------------------------------------------
+----------"
+"END"
+"------------------------------------------------------------------------------------------------------------------------------
+----------"
